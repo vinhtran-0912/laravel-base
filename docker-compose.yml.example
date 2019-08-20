@@ -1,0 +1,98 @@
+version: "3"
+
+services:
+    workspace:
+        container_name: hc_workspace
+        build:
+            context: .
+            dockerfile: ./.docker/workspace/build/Dockerfile
+        restart: always
+        volumes:
+            - ${BACKEND_PATH}:/var/www/app
+        tty: true
+    php-fpm:
+        container_name: hc_php-fpm
+        build:
+            context: .
+            dockerfile: ./.docker/php-fpm/build/Dockerfile
+        restart: always
+        volumes:
+            - ${BACKEND_PATH}:/var/www/app
+        expose:
+            - "9000"
+        links:
+            - workspace
+    nginx:
+        container_name: hc_nginx
+        build:
+            context: .
+            dockerfile: ./.docker/nginx/build/Dockerfile
+        restart: always
+        volumes:
+            - ${BACKEND_PATH}:/var/www/app
+            - ${LOG_NGINX_PATH}:/var/log/nginx
+            - ${NGINX_SITE_CONFIG_PATH}:/etc/nginx/conf.d
+            - ${NGINX_MODULES_PATH}:/etc/nginx/modules
+        ports:
+            - "84:80"
+        links:
+            - php-fpm
+    mysql:
+        container_name: hc_mysql
+        image: mysql:8.0
+        restart: always
+        command: --default-authentication-plugin=mysql_native_password
+        volumes:
+            - ${MYSQL_DATA_PATH}:/var/lib/mysql
+            - ${LOG_MYSQL_PATH}:/var/log/mysql
+        expose:
+            - "3306"
+        environment:
+            MYSQL_DATABASE: housecom
+            MYSQL_USER: housecom
+            MYSQL_PASSWORD: secret
+            MYSQL_ROOT_PASSWORD: secret
+    mysql_test:
+        container_name: hc_mysql_test
+        image: mysql:8.0
+        restart: always
+        command: --default-authentication-plugin=mysql_native_password
+        volumes:
+            - ${MYSQL_TEST_DATA_PATH}:/var/lib/mysql
+            - ${LOG_TEST_MYSQL_PATH}:/var/log/mysql
+        expose:
+            - "3306"
+        environment:
+            MYSQL_DATABASE: housecom_test
+            MYSQL_USER: housecom
+            MYSQL_PASSWORD: secret
+            MYSQL_ROOT_PASSWORD: secret
+    redis:
+        container_name: hc_redis
+        image: redis:5.0
+        restart: always
+        command: redis-server --requirepass secret
+        sysctls:
+            net.core.somaxconn: '511'
+        expose:
+            - "6379"
+        volumes:
+            - ${REDIS_DATA_PATH}:/data
+    elasticsearch:
+        container_name: hc_elasticsearch
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.3.0
+        restart: always
+        environment:
+            - discovery.type=single-node
+        ports:
+            - 9200:9200
+        volumes:
+            - elasticdata:/usr/share/elasticsearch/data
+    kibana:
+        container_name: hc_kibana
+        image: docker.elastic.co/kibana/kibana:7.3.0
+        ports:
+            - "5601:5601"
+volumes:
+    elasticdata:
+        driver: local
