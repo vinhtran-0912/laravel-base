@@ -11,3 +11,8 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+docker-compose.yml
+.docker/mysql
+.docker/mysql_test
+.docker/logs
+.docker/redis
