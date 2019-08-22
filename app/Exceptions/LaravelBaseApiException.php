@@ -4,13 +4,13 @@ namespace App\Exceptions;
 use Config;
 use Exception;
 
-class HousecomApiException extends Exception
+class LaravelBaseApiException extends Exception
 {
     private $errorCode;
     private $errorMessage;
 
     /**
-     * HousecomApiException constructor
+     * LaravelBaseApiException constructor
      *
      * @param  int $errorCode
      * @param  string $errorMessage
