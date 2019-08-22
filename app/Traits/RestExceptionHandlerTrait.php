@@ -4,7 +4,7 @@ namespace App\Traits;
 
 use Exception;
 use Illuminate\Http\Request;
-use App\Exceptions\HousecomApiException;
+use App\Exceptions\LaravelBaseApiException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
@@ -34,8 +34,8 @@ trait RestExceptionHandlerTrait
             case $this->isMethodNotAllowedHttpException($e):
                 $retval = $this->methodNotFound();
                 break;
-            case $this->isHousecomApiException($e):
-                $retval = $this->handleHousecomApiException($e);
+            case $this->isLaravelBaseApiException($e):
+                $retval = $this->handleLaravelBaseApiException($e);
                 break;
             default:
                 $retval = $this->badRequest();
@@ -97,12 +97,12 @@ trait RestExceptionHandlerTrait
     }
 
     /**
-     * Returns json response for HousecomApiException.
+     * Returns json response for LaravelBaseApiException.
      *
-     * @param HousecomApiException $exception
+     * @param LaravelBaseApiException $exception
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function handleHousecomApiException(HousecomApiException $exception)
+    protected function handleLaravelBaseApiException(LaravelBaseApiException $exception)
     {
         return $this->jsonResponse([
             'code' => $exception->getErrorCode(),
@@ -161,13 +161,13 @@ trait RestExceptionHandlerTrait
     }
 
     /**
-     * Determines if the given exception is HousecomApiException.
+     * Determines if the given exception is LaravelBaseApiException.
      *
      * @param Exception $e
      * @return bool
      */
-    protected function isHousecomApiException(Exception $e)
+    protected function isLaravelBaseApiException(Exception $e)
     {
-        return $e instanceof HousecomApiException;
+        return $e instanceof LaravelBaseApiException;
     }
 }

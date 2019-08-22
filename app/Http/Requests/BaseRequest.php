@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Log;
-use App\Exceptions\HousecomApiException;
+use App\Exceptions\LaravelBaseApiException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\ValidationException;
@@ -38,6 +38,6 @@ abstract class BaseRequest extends FormRequest
             Log::error($message[0]);
         }
 
-        throw new HousecomApiException('fail_validation', $message[0]);
+        throw new LaravelBaseApiException('fail_validation', $message[0]);
     }
 }
