@@ -2,11 +2,15 @@
 
 namespace App\Exceptions;
 
+use App\Traits\RestExceptionHandlerTrait;
+use App\Traits\RestTrait;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
 {
+    use RestTrait, RestExceptionHandlerTrait;
+
     /**
      * A list of the exception types that are not reported.
      *
