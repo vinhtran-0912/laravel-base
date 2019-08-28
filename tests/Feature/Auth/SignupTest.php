@@ -42,8 +42,8 @@ class SignupTest extends TestCase
             ->assertJson([
                 'error' => [
                     'name' => ['The name field is required.'],
-                    'email' => ['email is required'],
-                    'password' => ['password is required'],
+                    'email' => ['The email field is required.'],
+                    'password' => ['The password field is required.'],
                 ],
                 'status_code' => 422,
             ]);

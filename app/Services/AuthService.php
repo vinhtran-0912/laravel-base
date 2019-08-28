@@ -32,7 +32,7 @@ class AuthService
             'email',
             'password',
         ]);
-        if(!Auth::attempt($data))
+        if(! Auth::attempt($data))
             return response()->json([
                 'message' => 'Unauthorized'
             ], 401);

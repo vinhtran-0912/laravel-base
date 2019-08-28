@@ -37,11 +37,11 @@ class UserRequest extends BaseRequest
     public function messages()
     {
         return [
-            'email.required' => 'email is required',
-            'email.email' => 'email must be a valid email address',
-            'email.unique' => 'email has been already taken',
-            'password.required' => 'password is required',
-            'password.confirmed' => 'password confirmation is required',
+            'email.required' => trans('validation.required'),
+            'email.email' => trans('validation.email'),
+            'email.unique' => trans('validation.unique'),
+            'password.required' => trans('validation.required'),
+            'password.confirmed' => trans('validation.confirmed'),
         ];
     }
 

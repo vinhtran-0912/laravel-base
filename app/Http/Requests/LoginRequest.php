@@ -36,9 +36,9 @@ class LoginRequest extends BaseRequest
     public function messages()
     {
         return [
-            'email.required' => 'email is required',
-            'email.email' => 'email must be a valid email address',
-            'password.required' => 'password is required',
+            'email.required' => trans('validation.required'),
+            'email.email' => trans('validation.email'),
+            'password.required' => trans('validation.required'),
         ];
     }
 

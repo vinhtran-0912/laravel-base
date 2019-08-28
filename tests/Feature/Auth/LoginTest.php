@@ -68,8 +68,8 @@ class LoginTest extends TestCase
             ->assertStatus(422)
             ->assertJson([
                 'error' => [
-                'email' => ['email is required'],
-                'password' => ['password is required'],
+                'email' => ['The email field is required.'],
+                'password' => ['The password field is required.'],
                 ],
                 'status_code' => 422,
             ]);
