@@ -33,15 +33,6 @@ class LoginRequest extends BaseRequest
         ];
     }
 
-    public function messages()
-    {
-        return [
-            'email.required' => trans('validation.required'),
-            'email.email' => trans('validation.email'),
-            'password.required' => trans('validation.required'),
-        ];
-    }
-
     protected function failedValidation(Validator $validator)
     {
         $errors = (new ValidationException($validator))->errors();

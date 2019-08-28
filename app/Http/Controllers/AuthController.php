@@ -31,8 +31,7 @@ class AuthController extends Controller
      * Create user
      *
      * @param  [UeRequest] $request
-     * @return [json] user object
-     * @return [string] message
+     * @return JsonResponse
      */
     public function signup(UserRequest $request){
         $user = $this->authService->createUser($request);
@@ -47,9 +46,7 @@ class AuthController extends Controller
      * Create user
      *
      * @param  [LoginRequest] $request
-     * @return [string] access_token
-     * @return [string] token_type
-     * @return [string] expires_at
+     * @return JsonResponse
      */
     public function login(LoginRequest $request){
         $token = $this->authService->login($request);
@@ -60,7 +57,7 @@ class AuthController extends Controller
     /**
      * Logout user (Revoke the token)
      *
-     * @return [string] message
+     * @return JsonResponse
      */
     public function logout()
     {

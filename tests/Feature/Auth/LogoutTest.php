@@ -27,7 +27,7 @@ class LogoutTest extends TestCase
         $response
             ->assertStatus(200)
             ->assertJson([
-                'message'=> trans('auth.logoutSuccess')
+                'message'=> trans('auth.logout_success')
             ]);
     }
 

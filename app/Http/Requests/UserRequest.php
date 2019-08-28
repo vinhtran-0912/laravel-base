@@ -34,17 +34,6 @@ class UserRequest extends BaseRequest
         ];
     }
 
-    public function messages()
-    {
-        return [
-            'email.required' => trans('validation.required'),
-            'email.email' => trans('validation.email'),
-            'email.unique' => trans('validation.unique'),
-            'password.required' => trans('validation.required'),
-            'password.confirmed' => trans('validation.confirmed'),
-        ];
-    }
-
     protected function failedValidation(Validator $validator)
     {
         $errors = (new ValidationException($validator))->errors();
