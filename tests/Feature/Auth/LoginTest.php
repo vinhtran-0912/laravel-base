@@ -44,34 +44,96 @@ class LoginTest extends TestCase
             ]);
     }
 
-    public function testLoginFail()
+     /**
+     * A test Login Fail With Wrong Email and Password.
+     *
+     * @dataProvider providerLoginTestFail
+     * @return void
+     */
+    public function testLoginFail($originalString, $expectedResult)
     {
-        $response = $this->post('/api/auth/login', [
-            'email' => 'tran.ngoc.vinh@sun-asterisk.com',
-            'password' => '123123'
-        ]);
-
+        $response = $this->post('/api/auth/login', $originalString);
         $response
-            ->assertStatus(401)
-            ->assertJson([
-                'original' =>[
-                    'message' => 'Unauthorized'
-                ]
-            ]);
+            ->assertStatus(400)
+            ->assertJson($expectedResult);
     }
 
-    public function testsRequiresPasswordEmail()
+     /**
+     * A test Login Fail With requires Email and Password.
+     *
+     * @dataProvider providerLoginTestRequiresEmailPassword
+     * @return void
+     */
+    public function testsRequiresEmailPassword($originalString, $expectedResult)
     {
-       $response = $this->post('/api/auth/login');
+       $response = $this->post('/api/auth/login', $originalString);
 
        $response
-            ->assertStatus(422)
-            ->assertJson([
-                'error' => [
-                'email' => ['The email field is required.'],
-                'password' => ['The password field is required.'],
+            ->assertStatus(400)
+            ->assertJson($expectedResult);
+    }
+
+    public  function providerLoginTestFail()
+    {
+        return [
+            [
+                [
+                    'email' => 'tran.ngoc.vinh@sun-asterisk.com1',
+                    'password' => '123123',
                 ],
-                'status_code' => 422,
-            ]);
+                [
+                    'success' => false,
+                    'error' => [
+                        'code' => 601,
+                        'message' => 'Unauthorized, please check your credentials.'
+                    ]
+                ]
+            ],
+            [
+                [
+                    'email' => 'tran.ngoc.vinh@sun-asterisk.com',
+                    'password' => '123123123',
+                ],
+                [
+                    'success' => false,
+                    'error' => [
+                        'code' => 601,
+                        'message' => 'Unauthorized, please check your credentials.'
+                    ]
+                ]
+            ]
+        ];
+    }
+
+    public  function providerLoginTestRequiresEmailPassword()
+    {
+        return [
+            [
+                [
+                    'email' => '',
+                    'password' => '123123',
+                ],
+                [
+                    'success' => false,
+                    'error' => [
+                        'code' => 622,
+                        'message' => 'The email field is required.'
+                    ]
+                ]
+            ],
+            [
+                [
+                    'email' => 'tran.ngoc.vinh@sun-asterisk.com',
+                    'password' => '',
+                ],
+                [
+                    'success' => false,
+                    'error' => [
+                        'code' => 622,
+                        'message' => 'The password field is required.'
+                    ]
+                ]
+            ]
+        ];
     }
 }

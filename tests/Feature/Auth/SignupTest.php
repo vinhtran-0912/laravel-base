@@ -33,19 +33,66 @@ class SignupTest extends TestCase
             ]);
     }
 
-    public function testsRequiresPasswordEmailAndName()
+    /**
+     * A test Login Fail With Wrong Email, Name and Password.
+     *
+     * @dataProvider providerLoginTestRequiresPasswordEmailAndName
+     * @return void
+     */
+    public function testsRequiresPasswordEmailAndName($originalString, $expectedResult)
     {
-       $response = $this->post('/api/auth/signup');
+       $response = $this->post('/api/auth/signup', $originalString);
 
        $response
-            ->assertStatus(422)
-            ->assertJson([
-                'error' => [
-                    'name' => ['The name field is required.'],
-                    'email' => ['The email field is required.'],
-                    'password' => ['The password field is required.'],
+            ->assertStatus(400)
+            ->assertJson($expectedResult);
+    }
+
+    public  function providerLoginTestRequiresPasswordEmailAndName()
+    {
+        return [
+            [
+                [
+                    'email' => '',
+                    'name' => 'vim',
+                    'password' => '123123',
                 ],
-                'status_code' => 422,
-            ]);
+                [
+                    'success' => false,
+                    'error' => [
+                        'code' => 622,
+                        'message' => 'The email field is required.'
+                    ]
+                ]
+            ],
+            [
+                [
+                    'email' => 'tran.ngoc.vinh@sun-asterisk.com',
+                    'name' => 'vim',
+                    'password' => '',
+                ],
+                [
+                    'success' => false,
+                    'error' => [
+                        'code' => 622,
+                        'message' => 'The password field is required.'
+                    ]
+                ]
+            ],
+            [
+                [
+                    'email' => 'tran.ngoc.vinh@sun-asterisk.com',
+                    'name' => '',
+                    'password' => '123123',
+                ],
+                [
+                    'success' => false,
+                    'error' => [
+                        'code' => 622,
+                        'message' => 'The name field is required.'
+                    ]
+                ]
+            ]
+        ];
     }
 }

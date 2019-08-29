@@ -22,7 +22,7 @@ class LogoutTest extends TestCase
         $token = $user->createToken('Personal Access Token')->accessToken;
         $headers = ['Authorization' => "Bearer $token"];
 
-        $response = $this->delete('/api/auth/logout', [], $headers);
+        $response = $this->post('/api/auth/logout', [], $headers);
 
         $response
             ->assertStatus(200)

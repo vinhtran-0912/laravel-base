@@ -33,15 +33,4 @@ class UserRequest extends BaseRequest
             'password' => 'required|confirmed',
         ];
     }
-
-    protected function failedValidation(Validator $validator)
-    {
-        $errors = (new ValidationException($validator))->errors();
-
-        throw new HttpResponseException(response()->json(
-            [
-                'error' => $errors,
-                'status_code' => 422,
-            ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY));
-    }
 }
