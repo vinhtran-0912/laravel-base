@@ -18,37 +18,41 @@ class SignupTest extends TestCase
             'name' => 'vim',
             'password' => '123123',
             'password_confirmation' => '123123',
-        ]);
+            ]
+        );
 
         $response
             ->assertStatus(201)
-            ->assertJsonStructure([
-                'message',
-                'user' => [
-                    'email',
-                    'name',
-                    'created_at',
-                    'updated_at'
+            ->assertJsonStructure(
+                [
+                    'message',
+                    'user' => [
+                        'email',
+                        'name',
+                        'created_at',
+                        'updated_at'
+                    ]
                 ]
-            ]);
+            );
     }
 
     /**
-     * A test Login Fail With Wrong Email, Name and Password.
+     * A test misssing email, name and password.
      *
      * @dataProvider providerLoginTestRequiresPasswordEmailAndName
+     *
      * @return void
      */
     public function testsRequiresPasswordEmailAndName($originalString, $expectedResult)
     {
-       $response = $this->post('/api/auth/signup', $originalString);
+        $response = $this->post('/api/auth/signup', $originalString);
 
-       $response
+        $response
             ->assertStatus(400)
             ->assertJson($expectedResult);
     }
 
-    public  function providerLoginTestRequiresPasswordEmailAndName()
+    public function providerLoginTestRequiresPasswordEmailAndName()
     {
         return [
             [

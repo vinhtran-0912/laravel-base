@@ -18,8 +18,9 @@ class AuthController extends Controller
      */
     protected $authService;
 
-     /**
+    /**
      * AuthController constructor.
+     *
      * @param AuthService $authService
      */
     public function __construct(AuthService $authService)
@@ -27,28 +28,32 @@ class AuthController extends Controller
         $this->authService = $authService;
     }
 
-     /**
+    /**
      * Create user
      *
-     * @param  [UeRequest] $request
+     * @param  [UserRequest] $request
+     *
      * @return JsonResponse
      */
-    public function signup(UserRequest $request){
+    public function signup(UserRequest $request)
+    {
         $user = $this->authService->createUser($request);
 
-        return response()->json([
-            'message' => 'Successfully created user!',
-            'user' => $user
-        ], 201);
+        return response()->json(
+            [
+                'message' => 'Successfully created user!',
+                'user' => $user
+            ], 201
+        );
     }
 
-     /**
-     * Create user
-     *
+    /**
      * @param  [LoginRequest] $request
+     *
      * @return JsonResponse
      */
-    public function login(LoginRequest $request){
+    public function login(LoginRequest $request)
+    {
         $token = $this->authService->login($request);
 
         return response()->json($token, $token->status());
@@ -63,8 +68,8 @@ class AuthController extends Controller
     {
         Auth::user()->token()->revoke();
 
-        return response()->json([
-            'message' => trans('auth.logout_success'),
-        ]);
+        return response()->json(
+            [ 'message' => trans('auth.logout_success') ]
+        );
     }
 }

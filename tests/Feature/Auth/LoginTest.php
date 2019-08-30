@@ -14,40 +14,51 @@ class LoginTest extends TestCase
 
     public function testLoginSuccessfully()
     {
-        $user = factory(User::class)->create([
-            'email' => 'tran.ngoc.vinh@sun-asterisk.com',
-            'name' => 'vim',
-            'password' => bcrypt('123123'),
-        ]);
+        factory(User::class)->create(
+            [
+                'email' => 'tran.ngoc.vinh@sun-asterisk.com',
+                'name' => 'vim',
+                'password' => bcrypt('123123'),
+            ]
+        );
 
-        $response = $this->post('/api/auth/login', [
-            'email' => 'tran.ngoc.vinh@sun-asterisk.com',
-            'password' => '123123'
-        ]);
+        $response = $this->post(
+            '/api/auth/login', [
+                'email' => 'tran.ngoc.vinh@sun-asterisk.com',
+                'password' => '123123'
+            ]
+        );
 
         $response
             ->assertStatus(200)
-            ->assertJsonStructure([
-                'original'=> [
-                    'access_token',
-                    'token_type',
-                    'expires_at',
-                    'user'=> [
-                        'id',
-                        'name',
-                        'email',
-                        'created_at',
-                        'updated_at',
-                        'email_verified_at',
+            ->assertJsonStructure(
+                [
+                    'original'=> [
+                        'access_token',
+                        'token_type',
+                        'expires_at',
+                        'user'=> [
+                            'id',
+                            'name',
+                            'email',
+                            'created_at',
+                            'updated_at',
+                            'email_verified_at',
+                        ]
                     ]
                 ]
-            ]);
+            );
     }
 
-     /**
-     * A test Login Fail With Wrong Email and Password.
+    /**
+     * A test login fail with wrong email and password.
      *
-     * @dataProvider providerLoginTestFail
+     * @param [Array] $originalString
+     * @param [Array] $expectedResult
+     *
+     * @dataProvider      providerLoginTestFail
+     * @expectedException unauthorized
+     *
      * @return void
      */
     public function testLoginFail($originalString, $expectedResult)
