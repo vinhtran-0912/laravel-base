@@ -29,4 +29,8 @@ return [
         'error_code' => 622,
         'message' => 'Fail validation!',
     ],
+    'authorize' => [
+        'error_code' => 603,
+        'message' => 'You have not permission.',
+    ],
 ];

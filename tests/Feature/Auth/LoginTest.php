@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Auth;
 
-use App\User;
+use App\Models\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -57,7 +57,6 @@ class LoginTest extends TestCase
      * @param [Array] $expectedResult
      *
      * @dataProvider      providerLoginTestFail
-     * @expectedException unauthorized
      *
      * @return void
      */

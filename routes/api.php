@@ -29,3 +29,12 @@ Route::group([
         Route::post('logout', 'AuthController@logout');
     });
 });
+
+Route::group([
+    'prefix' => 'admin',
+    'middleware' => 'auth:api',
+    'namespace' => 'Admin',
+], function() {
+    Route::resource('users', 'UserController');
+});
+
