@@ -15,5 +15,10 @@ return [
 
     'failed' => 'These credentials do not match our records.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
-    'logout_success' => 'Successfully logged out'
+    'logout_success' => 'Successfully logged out',
+    'create_success' => 'Successfully created user!',
+    'delete_success' => 'Successfully deleted user!',
+    'delete_fail' => 'delete user failed!',
+    'update_success' => 'Successfully updated user!',
+    'update_fail' => 'update user failed!'
 ];

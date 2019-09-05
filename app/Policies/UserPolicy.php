@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\User;
+use App\Models\User as Member;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class UserPolicy
@@ -28,7 +29,7 @@ class UserPolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->can('create_user');
     }
 
     /**
@@ -39,7 +40,7 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
-        //
+        return $user->can('edit_user');
     }
 
     /**
@@ -48,30 +49,8 @@ class UserPolicy
      * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function delete(User $user, User $model)
+    public function delete(User $user, Member $model)
     {
-        //
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @param  \App\Models\User  $user
-     * @return mixed
-     */
-    public function restore(User $user, User $model)
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @param  \App\Models\User  $user
-     * @return mixed
-     */
-    public function forceDelete(User $user, User $model)
-    {
-        //
+        return $user->can('delete_user');
     }
 }

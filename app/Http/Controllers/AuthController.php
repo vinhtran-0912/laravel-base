@@ -41,7 +41,7 @@ class AuthController extends Controller
 
         return response()->json(
             [
-                'message' => 'Successfully created user!',
+                'message' => trans('auth.create_success'),
                 'user' => $user
             ], 201
         );
