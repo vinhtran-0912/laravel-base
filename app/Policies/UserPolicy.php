@@ -38,9 +38,12 @@ class UserPolicy
      * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function update(User $user, User $model)
+    public function update(User $user, Member $member)
     {
-        return $user->can('edit_user');
+        if ($user->hasRole('admin') || ($user->hasRole('member') && ($user->id === $member->id))) {
+            return $user->can('edit_user');
+        }
+         return false;
     }
 
     /**

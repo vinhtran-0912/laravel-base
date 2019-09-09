@@ -1,8 +1,9 @@
 <?php
 namespace App\Services;
 
-use App\Models\User;
 use Carbon\Carbon;
+use App\Models\User;
+use App\Jobs\SendEmailRegisterUser;
 use Illuminate\Support\Facades\Auth;
 use App\Exceptions\LaravelBaseApiException;
 
@@ -18,10 +19,12 @@ class AuthService
         $data = $request->only(
             [ 'email', 'password', 'name' ]
         );
-
         $data['password'] = bcrypt($data['password']);
+        $user = User::create($data);
+        SendEmailRegisterUser::dispatch($user)
+            ->delay(now()->addMinutes(1));
 
-        return User::create($data);
+        return $user;
     }
 
     /**
