@@ -18,9 +18,9 @@ class WelcomeEmail extends Mailable
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct()
     {
-        $this->user = $user;
+        // $this->user = $user;
     }
 
     /**
@@ -30,7 +30,8 @@ class WelcomeEmail extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.welcome')->with('user', $this->user)
-            ->from('tran.ngoc.vinh@sun-asterisk.com');
+        return $this->view('mail.welcome');
+        // ->with('user', $this->user)
+            // ->from('tran.ngoc.vinh@sun-asterisk.com');
     }
 }

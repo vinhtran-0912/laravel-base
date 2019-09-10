@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use Mail;
 use App\Mail\WelcomeEmail;
 use Illuminate\Console\Command;
 
@@ -38,9 +39,8 @@ class RegisteredUsers extends Command
      */
     public function handle()
     {
-        dd($this);
-        $email = new WelcomeEmail($this->user);
-
-        Mail::to($this->user['email'])->send($email);
+        $users = \DB::table('users')
+                  ->whereRaw('Date(created_at) = CURDATE()');
+        Mail::to('krunal@appdividend.com')->send(new WelcomeEmail());
     }
 }
