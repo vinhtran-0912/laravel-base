@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Carbon\Carbon;
+use App\Models\User;
 use http\Env\Response;
 use Illuminate\Http\Request;
 use App\Services\AuthService;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\LoginRequest;
+use App\Jobs\SendEmailRegisterUser;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
@@ -38,6 +39,9 @@ class AuthController extends Controller
     public function signup(UserRequest $request)
     {
         $user = $this->authService->createUser($request);
+
+        SendEmailRegisterUser::dispatch($user)
+            ->delay(now()->addMinutes(1));
 
         return response()->json(
             [
