@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use Mail;
+use Carbon\Carbon;
+use App\Models\User;
 use App\Mail\WelcomeEmail;
 use Illuminate\Console\Command;
 
@@ -39,8 +41,7 @@ class RegisteredUsers extends Command
      */
     public function handle()
     {
-        $users = \DB::table('users')
-                  ->whereRaw('Date(created_at) = CURDATE()');
-        Mail::to('krunal@appdividend.com')->send(new WelcomeEmail());
+        $users = User::whereDate('created_at', Carbon::today());
+        Mail::to('tran.ngoc.vinh@sun-asterisk.com')->send(new WelcomeEmail());
     }
 }
