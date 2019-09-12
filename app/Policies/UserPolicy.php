@@ -22,6 +22,22 @@ class UserPolicy
     }
 
     /**
+     * Determine whether the user can show the model.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\User  $member
+     *
+     * @return mixed
+     */
+    public function show_detail_a_user(User $user, Member $member)
+    {
+        if ($user->hasRole('admin') || ($user->id === $member->id)) {
+            return true;
+        }
+         return false;
+    }
+
+    /**
      * Determine whether the user can create models.
      *
      * @param  \App\Models\User  $user

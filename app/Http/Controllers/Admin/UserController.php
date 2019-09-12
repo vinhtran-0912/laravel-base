@@ -32,14 +32,37 @@ class UserController extends Controller
      *
      * @return JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
+        // if($request->has('search')){
+        //     $items = Item::search($request->input('search'))->toArray();
+        // }
         $this->authorize('view', User::class);
         $users = $this->userService->get_list_users();
 
         return response()->json(
-            [ 'listUser' => $users ], 200
+            [
+                'listUser' => $users,
+                // 'userSearch' => $items
+            ], 200
         );
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+
+        dd($id);
+        $member = User::find($id);
+        $this->authorize('show_detail_a_user', $member);
+        $member = $this->userService->showUser($member);
+         return response()->json($member);
     }
 
     /**

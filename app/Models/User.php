@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Laravel\Passport\HasApiTokens;
+use Elasticquent\ElasticquentTrait;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -22,6 +23,17 @@ class User extends Authenticatable
         'email',
         'password',
     ];
+
+    protected $mappingProperties = array(
+        'name' => [
+          'type' => 'string',
+          "analyzer" => "standard",
+        ],
+        'email' => [
+          'type' => 'string',
+          "analyzer" => "standard",
+        ],
+    );
 
     /**
      * The attributes that should be hidden for arrays.
