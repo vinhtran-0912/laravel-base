@@ -34,16 +34,16 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        // if($request->has('search')){
-        //     $items = Item::search($request->input('search'))->toArray();
-        // }
         $this->authorize('view', User::class);
-        $users = $this->userService->get_list_users();
+        if($request->has('search')){
+            $users = User::searchByQuery(['match' => ['name' => $request->input('search')]]);
+        }else {
+            $users = $this->userService->get_list_users();
+        }
 
         return response()->json(
             [
                 'listUser' => $users,
-                // 'userSearch' => $items
             ], 200
         );
     }
@@ -57,8 +57,6 @@ class UserController extends Controller
      */
     public function show($id)
     {
-
-        dd($id);
         $member = User::find($id);
         $this->authorize('show_detail_a_user', $member);
         $member = $this->userService->showUser($member);
@@ -74,7 +72,7 @@ class UserController extends Controller
     {
         $this->authorize('create', User::class);
         $users = $this->userService->create_user($request->all());
-
+        $users->addToIndex();
         return response()->json(
             [
                 'message' => trans('auth.create_success'),
@@ -113,7 +111,7 @@ class UserController extends Controller
     {
         $this->authorize('delete', $user);
         $response = $this->userService->delete_user($user);
-
+        $user->removeFromIndex();
         return response()->json(
             [
                 'message' => $response ? trans('auth.delete_success') : trans('auth.delete_fail')
