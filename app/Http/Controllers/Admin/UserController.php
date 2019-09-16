@@ -36,7 +36,9 @@ class UserController extends Controller
     {
         $this->authorize('view', User::class);
         if($request->has('search')){
-            $users = User::searchByQuery(['match' => ['name' => $request->input('search')]]);
+            // $users = User::searchByQuery(['match' => ['email' => $request->input('search')]]);
+            // $users = User::search($request->input('search'));
+            $users = User::search('vim');
         }else {
             $users = $this->userService->get_list_users();
         }
@@ -60,7 +62,7 @@ class UserController extends Controller
         $member = User::find($id);
         $this->authorize('show_detail_a_user', $member);
         $member = $this->userService->showUser($member);
-         return response()->json($member);
+        return response()->json($member);
     }
 
     /**
